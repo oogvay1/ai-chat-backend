@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 
-const checkUser = (req, res, next) => {
+const checkUser = async (req, res, next) => {
 
     const { fullname, email, password } = req.body;
 
@@ -12,7 +12,7 @@ const checkUser = (req, res, next) => {
         return res.status(400).json({ message: "Password should be at least 6 characters" });
     }
 
-    const user = User.findOne({ email });
+    const user = await User.findOne({ email });
 
     if (user) {
         return res.status(400).json({ message: "This email is already exist" });
