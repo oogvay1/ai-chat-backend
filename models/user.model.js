@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt"
+import { hashPassword } from "../utils/hashPassword.utils.js";
 
 const userSchema = new mongoose.Schema(
     {
@@ -30,10 +31,17 @@ userSchema.methods.matchPassword = async (enteredPassword) => {
 };
 
 userSchema.pre('save', async (next) => {
-    if (!this.isModified('password')) {
-        next();
-    }
+    if (!this.isModified('password')) return next();
 
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    try {
+        this.password = await hashPassword(this.password);
+
+        next();
+    } catch (err) {
+        next(err);
+    }
 });
+
+const User = mongoose.model("users", userSchema)
+
+export default User

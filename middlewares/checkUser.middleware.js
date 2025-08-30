@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import User from "../models/user.model.js";
 
 const checkUser = (req, res, next) => {
 
@@ -12,7 +12,11 @@ const checkUser = (req, res, next) => {
         return res.status(400).json({ message: "Password should be at least 6 characters" });
     }
 
-    const user = 
+    const user = User.findOne({ email });
+
+    if (user) {
+        return res.status(400).json({ message: "This email is already exist" });
+    }
 
     next();
 }
