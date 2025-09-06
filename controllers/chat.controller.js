@@ -1,11 +1,10 @@
 import openai from "../utils/clientAi.js"
 
 const chatH = [];
-export const chat_controller = async (req, res) => {
+export const text = async (req, res) => {
 
     try {
         const { mode, prompt } = req.body;
-        console.log(mode, prompt)
 
         chatH.push({ role: "user", content: prompt });
 
@@ -15,6 +14,8 @@ export const chat_controller = async (req, res) => {
             model: "gpt-4o-mini",
             messages: chatH
         });
+
+        chatH.push({ role: "ai", content: output.choices[0].message.content });
 
         res.send({ mode, output: output.choices[0].message.content });
     } catch (err) {

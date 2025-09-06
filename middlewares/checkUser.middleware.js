@@ -2,9 +2,9 @@ import User from "../models/user.model.js";
 
 const checkUser = async (req, res, next) => {
 
-    const { fullname, email, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!fullname || !email || !password) {
+    if (!email || !password) {
         return res.status(400).json({ message: "Each field is required" });
     }
 

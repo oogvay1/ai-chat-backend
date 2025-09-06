@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import generateToken from "../utils/generateToken.js";
 
-export const login = async (req, res) => {
+export const loginService = async (req, res) => {
 
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -9,7 +9,7 @@ export const login = async (req, res) => {
     try {
         if (user && (await user.matchPassword(password))) {
 
-            const token = generateToken(user.id, user.role);
+            const token = generateToken({ id: user._id, role: user.role });
 
             return res.json({
                 id: user.id,

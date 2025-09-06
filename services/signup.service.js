@@ -1,20 +1,23 @@
 import User from "../models/user.model.js";
+import generateToken from "../utils/generateToken.js";
 
-export const signup = async (req, res) => {
+export const signupService = async (req, res) => {
 
-    const { fullname, email, password } = req.body;
+    const { email, password } = req.body;
 
     try {
 
         const newUser = new User({
-            fullname,
             email,
             password
         });
 
+        const token = generateToken({id: newUser._id, role: newUser.role});
+
         await newUser.save();
 
         const userRes = newUser.toObject();
+        userRes.token = token;
         delete userRes.password;
 
         res.status(201).json(userRes);
