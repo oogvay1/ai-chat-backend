@@ -6,8 +6,8 @@ const chatSchema = new mongoose.Schema(
         sender: { type: String, enum: ["user", "ai"], required: true },
         message: { type: String, required: true }
     },
-    { timestamps: true })
-    ;
+    { timestamps: true }
+);
 
 const Message = mongoose.model("messages", chatSchema);
 
